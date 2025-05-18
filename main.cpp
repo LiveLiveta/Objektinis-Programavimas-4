@@ -3,40 +3,79 @@
 
 int main() {
 
-    ifstream input("text.txt");
+    ifstream ivestis("text.txt");
 
-    if (!input.is_open()) {
+    if (!ivestis.is_open()) {
         cout << "Nepavyko atidaryti failo text.txt" << endl;
         return 1;
     }
 
-    ofstream wordOutput("words.txt");
-    ofstream urlOutput("urls.txt");
-    ofstream xrefOutput("xref.txt");
+    ofstream zodzioIrasymas("zodziai.txt");
+    ofstream nuorodosIrasymas("nuorodos.txt");
+    ofstream zodziuVietuIrasymsa("zodziuVietos.txt");
 
-    unordered_map<string, pair<int, set<int>>> wordInfo;
-    set<string> urls;
+    unordered_map<string, pair<int, set<int>>> zodzioInfo;
+    set<string> nuorodos;
 
-    string line;
-    int lineNum = 0;
+    string eilute;
+    int eilesNumeris = 0;
 
-    while (getline(input, line)) {
-        lineNum++;
-        stringstream ss(line);
-        string word;
+    while (getline(ivestis, eilute)) {
+        eilesNumeris++;
+        stringstream ss(eilute);
+        string zodis;
 
-        while (ss >> word) {
-            if (YraURL(word)) {
-                urls.insert(word);
+        while (ss >> zodis) {
+            if (YraURL(zodis)) {
+                nuorodos.insert(zodis);
                 continue;
             }
 
-            string tikrasZodis = tikZodis(word);
+            string tikrasZodis = tikZodis(zodis);
             if (!tikrasZodis.empty()) {
-                wordInfo[tikrasZodis].first++;
-                wordInfo[tikrasZodis].second.insert(lineNum);
+                zodzioInfo[tikrasZodis].first++;
+                zodzioInfo[tikrasZodis].second.insert(eilesNumeris);
             }
         }
     }
+
+    zodzioIrasymas << left << setw(15) << "Zodis"
+               << setw(10) << "Kiekis" << endl;
+
+    for (const auto& [zodis, info] : zodzioInfo) {
+        if (info.first > 1) {
+            zodzioIrasymas << left << setw(15) << zodis
+                       << setw(10) << info.first << endl;
+        }
+    }
+
+    zodziuVietuIrasymsa << left << setw(15) << "Zodis"
+               << setw(10) << "Kiekis"
+               << "Eilutės" << endl;
+
+    for (const auto& [zodis, info] : zodzioInfo) {
+        if (info.first > 1) {
+            zodziuVietuIrasymsa << left << setw(15) << zodis
+                       << setw(10) << info.first;
+
+            for (int eilNumeris : info.second) {
+                zodziuVietuIrasymsa << eilNumeris << " ";
+            }
+            zodziuVietuIrasymsa << endl;
+        }
+    }
+
+    for (const string& nuoroda : nuorodos) {
+        nuorodosIrasymas << nuoroda << endl;
+    }
+
+    ivestis.close();
+    zodzioIrasymas.close();
+    nuorodosIrasymas.close();
+    zodziuVietuIrasymsa.close();
+
+    cout << "Sėkmingai baigta." << endl;
+
+
     return 0;
 }

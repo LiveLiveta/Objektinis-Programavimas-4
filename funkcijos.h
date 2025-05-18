@@ -1,7 +1,7 @@
 #ifndef FUNKCIJOS_H
 #define FUNKCIJOS_H
 
-#include <pagalbines.h>
+#include "pagalbines.h"
 
 using namespace std;
 
