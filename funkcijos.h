@@ -1,9 +1,7 @@
 #ifndef FUNKCIJOS_H
 #define FUNKCIJOS_H
 
-#include <string>
-#include <cctype>
-#include <regex>
+#include <pagalbines.h>
 
 using namespace std;
 
