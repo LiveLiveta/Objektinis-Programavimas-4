@@ -1,0 +1,12 @@
+.vs/
+*.user
+*.suo
+
+Debug/
+Release/
+*.obj
+*.pdb
+
+*.VC.db
+*.opensdf
+*.log
