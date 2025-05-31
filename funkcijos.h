@@ -5,7 +5,7 @@
 
 using namespace std;
 
-string tikZodis(const string& zodis);
-bool YraURL(const string& zodis);
+wstring tikZodis(const wstring& zodis);
+bool YraURL(const wstring& zodis, const string& NuoroduPabaigosSuformatuotos);
 
 #endif

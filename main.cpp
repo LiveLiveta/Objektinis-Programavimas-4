@@ -10,35 +10,62 @@ int main() {
         cout << "Kai kurie tarptautiniø kalbø simboliai gali bûti rodomi ne taip, kaip tikëtasi.." << e.what() << endl;
     }
 
-    ifstream ivestis("text.txt");
+    wifstream ivestis("tekstas.txt");
 
     if (!ivestis.is_open()) {
         cout << "Nepavyko atidaryti failo text.txt" << endl;
         return 1;
     }
 
-    ofstream zodzioIrasymas("zodziai.txt");
-    ofstream nuorodosIrasymas("nuorodos.txt");
-    ofstream zodziuVietuIrasymsa("zodziuVietos.txt");
+    ifstream NuoroduPabaiguFailas("NuoroduPabaigos.txt");
+    if (!NuoroduPabaiguFailas) {
+        cout << "Nepavyko atidaryti NuoroduPabaigos.txt" << endl;
+        return 1;
+    }
 
-    unordered_map<string, pair<int, set<int>>> zodzioInfo;
-    set<string> nuorodos;
+    ostringstream NuoroduPabaigos;
+    NuoroduPabaigos << "(";
 
-    string eilute;
+    string NuoroduPabaigosEilutesIndeksas;
+    bool first = true;
+
+    while (getline(NuoroduPabaiguFailas, NuoroduPabaigosEilutesIndeksas)) {
+        if (!NuoroduPabaigosEilutesIndeksas.empty()) {
+            if (!first) {
+                NuoroduPabaigos << "|";
+            }
+            NuoroduPabaigos << NuoroduPabaigosEilutesIndeksas;
+            first = false;
+        }
+    }
+
+    NuoroduPabaigos << ")";
+    NuoroduPabaiguFailas.close();
+
+    string NuoroduPabaigosSuformatuotos = NuoroduPabaigos.str();
+
+    wofstream zodzioIrasymas("zodziai.txt");
+    wofstream nuorodosIrasymas("nuorodos.txt");
+    wofstream zodziuVietuIrasymsa("zodziuVietos.txt");
+
+    unordered_map<wstring, pair<int, set<int>>> zodzioInfo;
+    set<wstring> nuorodos;
+
+    wstring eilute;
     int eilesNumeris = 0;
 
     while (getline(ivestis, eilute)) {
         eilesNumeris++;
-        stringstream ss(eilute);
-        string zodis;
+        wstringstream ss(eilute);
+        wstring zodis;
 
         while (ss >> zodis) {
-            if (YraURL(zodis)) {
+            if (YraURL(zodis, NuoroduPabaigosSuformatuotos)) {
                 nuorodos.insert(zodis);
                 continue;
             }
 
-            string tikrasZodis = tikZodis(zodis);
+            wstring tikrasZodis = tikZodis(zodis);
             if (!tikrasZodis.empty()) {
                 zodzioInfo[tikrasZodis].first++;
                 zodzioInfo[tikrasZodis].second.insert(eilesNumeris);
@@ -72,7 +99,7 @@ int main() {
         }
     }
 
-    for (const string& nuoroda : nuorodos) {
+    for (const wstring& nuoroda : nuorodos) {
         nuorodosIrasymas << nuoroda << endl;
     }
 

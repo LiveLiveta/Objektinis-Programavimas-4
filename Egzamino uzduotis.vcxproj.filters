@@ -34,4 +34,8 @@
     <None Include="README.MD" />
     <None Include=".gitignore" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="tekstas.txt" />
+    <Text Include="NuoroduPabaigos.txt" />
+  </ItemGroup>
 </Project>

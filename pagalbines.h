@@ -10,6 +10,9 @@
 #include <unordered_map>
 #include <set>
 #include <iomanip>
+#include <locale>
+#include <clocale>
+#include <stdexcept>
 
 
 using std::cout;
