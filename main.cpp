@@ -3,10 +3,10 @@
 
 int main() {
 
-    ifstream ivestis("text.txt");
+    ifstream ivestis("tekstas.txt");
 
     if (!ivestis.is_open()) {
-        cout << "Nepavyko atidaryti failo text.txt" << endl;
+        cout << "Nepavyko atidaryti failo tekstas.txt" << endl;
         return 1;
     }
 
@@ -26,8 +26,12 @@ int main() {
         string zodis;
 
         while (ss >> zodis) {
-            if (YraURL(zodis)) {
-                nuorodos.insert(zodis);
+            string isvalytas = zodis;
+            while (!isvalytas.empty() && ispunct(isvalytas.back())) {
+                isvalytas.pop_back();
+            }
+            if (YraURL(isvalytas)) {
+                nuorodos.insert(isvalytas);
                 continue;
             }
 
@@ -74,7 +78,7 @@ int main() {
     nuorodosIrasymas.close();
     zodziuVietuIrasymsa.close();
 
-    cout << "Sėkmingai baigta." << endl;
+    cout << "Sekmingai baigta." << endl;
 
 
     return 0;
